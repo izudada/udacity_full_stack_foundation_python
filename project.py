@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, redirect
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker 
@@ -39,11 +39,17 @@ def restaurantMenu(restaurant_id):
     return render_template('menu.html', restaurant = restaurant, items = items)
 
 
-@app.route("/restaurant/<int:restaurant_id>/new/", methods = ['GET', 'POST'])
+@app.route("/restaurant/<int:restaurant_id>/new/", methods=['GET', 'POST'])
 def newMenuItem(restaurant_id):
     DBSession = sessionmaker(bind=engine)
     session = DBSession()
-    return "page to create a new menu item. Task 1 complete!"
+    if request.method == 'POST':
+        newItem = MenuItem(name = request.form['name'], restaurant_id = restaurant_id)
+        session.add(newItem)
+        session.commit()
+        return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
+    else:
+        return render_template('newmenuitem.html', restaurant_id=restaurant_id)
 
 
 @app.route('/restaurant/<int:restaurant_id>/<int:menu_id>/edit/')
