@@ -9,7 +9,7 @@
     <h1>{{restaurant.name}}</h1>
     <br>
 
-    <a href="{{url_for('newMenuItem', restaurant_id = restaurant.id )}}"> Create New Menu</a>
+    <a href="{{url_for('newMenuItem', restaurant_id = restaurant.id )}}"> New Menu</a>
 
     {% for i in items %}
 
@@ -24,7 +24,7 @@
 
         </br>
         <a href = '{{url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id = i.id ) }}'>Delete</a>
-
+        <hr>
     </div>
 
 
